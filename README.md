@@ -1,20 +1,34 @@
-<div align="center">
+
+<div align="center"> 
+<!-- 居中盒子-->
 
 # Lightning-Hydra-Template
 
++ [创建简洁、一致、易读的徽章：concise, consistent, legible badges](https://shields.io/)
+- 构建状态（动态badge）、版本信息、下载次数、许可证、测试覆盖率
++ [管理和维护多语言的钩子hooks: 代码提交之前执行的预定义的检查等任务（自动化脚本或操作）]((https://github.com/pre-commit/pre-commit))
 [![python](https://img.shields.io/badge/-Python_3.8_%7C_3.9_%7C_3.10-blue?logo=python&logoColor=white)](https://github.com/pre-commit/pre-commit)
+
 [![pytorch](https://img.shields.io/badge/PyTorch_2.0+-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/get-started/locally/)
 [![lightning](https://img.shields.io/badge/-Lightning_2.0+-792ee5?logo=pytorchlightning&logoColor=white)](https://pytorchlightning.ai/)
+
 [![hydra](https://img.shields.io/badge/Config-Hydra_1.3-89b8cd)](https://hydra.cc/)
 [![black](https://img.shields.io/badge/Code%20Style-Black-black.svg?labelColor=gray)](https://black.readthedocs.io/en/stable/)
++ [强制性的代码格式化工具 "Black"](https://black.readthedocs.io/en/stable/) 
++ [ Python 代码文件中的导入语句进行排序，按字母顺序排列，同时自动将导入语句分组并按照它们的类型进行分类 "isort"](https://pycqa.github.io/isort/) 
+
 [![isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/) <br>
++ `测试、代码质量、Codecov可以用来监视和报告测试覆盖率`<br>
 [![tests](https://github.com/ashleve/lightning-hydra-template/actions/workflows/test.yml/badge.svg)](https://github.com/ashleve/lightning-hydra-template/actions/workflows/test.yml)
 [![code-quality](https://github.com/ashleve/lightning-hydra-template/actions/workflows/code-quality-main.yaml/badge.svg)](https://github.com/ashleve/lightning-hydra-template/actions/workflows/code-quality-main.yaml)
 [![codecov](https://codecov.io/gh/ashleve/lightning-hydra-template/branch/main/graph/badge.svg)](https://codecov.io/gh/ashleve/lightning-hydra-template) <br>
+
++ `证书、PR、贡献者`<br>
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/ashleve/lightning-hydra-template#license)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ashleve/lightning-hydra-template/pulls)
 [![contributors](https://img.shields.io/github/contributors/ashleve/lightning-hydra-template.svg)](https://github.com/ashleve/lightning-hydra-template/graphs/contributors)
 
++ `整洁的、干净的模板，意味着模板本身的代码结构和布局是清晰的，没有多余的冗余内容。 `<br> 
 A clean template to kickstart your deep learning project 🚀⚡🔥<br>
 Click on [<kbd>Use this template</kbd>](https://github.com/ashleve/lightning-hydra-template/generate) to initialize new repository.
 
@@ -25,22 +39,39 @@ _Suggestions are always welcome!_
 <br>
 
 ## 📌  Introduction
-
+        
 **Why you might want to use it:**
 
 ✅ Save on boilerplate <br>
 Easily add new models, datasets, tasks, experiments, and train on different accelerators, like multi-GPU, TPU or SLURM clusters.
++ 减少样板代码
+  - 样板代码通常是一些重复性或标准化的代码块，用于初始化、配置或处理常见任务。通过减少样板代码，开发者可以更快地启动项目并专注于核心功能的开发。
+  - 轻松添加新模型、数据集、任务、实验 `（灵活性）`
+  - 在不同的加速器上进行训练，如多GPU、TPU或SLURM集群 `兼容性`
+
 
 ✅ Education <br>
 Thoroughly commented. You can use this repo as a learning resource.
++ 详细注释，可以将此存储库用作学习资源 `教育性`
 
 ✅ Reusability <br>
 Collection of useful MLOps tools, configs, and code snippets. You can use this repo as a reference for various utilities.
++ 一组有用的MLOps工具、配置和代码片段
+  - "MLOps tools"：指的是与机器学习运维相关的工具，这些工具用于管理和自动化机器学习模型的开发、部署和监控。
+  - "configs"（配置）：这是配置文件或设置，用于配置和调整MLOps工具的行为。
+  - "code snippets"（代码片段）：这是一小段可重用的代码，通常用于执行特定任务或实现特定功能。
++ 可以将此存储库用作各种工具的参考。
 
 **Why you might not want to use it:**
++ 限制和注意事项
 
 ❌ Things break from time to time <br>
 Lightning and Hydra are still evolving and integrate many libraries, which means sometimes things break. For the list of currently known problems visit [this page](https://github.com/ashleve/lightning-hydra-template/labels/bug).
+
++ 项目或模板中的某些功能偶尔可能会出现问题或`不稳定`
+  - 由于"Lightning" 和 "Hydra"两个库仍在不断发展和演进，因此可能会有新功能添加或现有功能进行更改
+  - 两个工具整合了许多其他库和组件，以增强其功能。
+  - 这意味着，有时候，这些库和组件之间的兼容性可能会出现问题，导致项目或模板中的某些功能偶尔可能会出现问题或不稳定。由于不断的发展和整合，有时某些功能可能会出现故障或不兼容，导致问题出现。
 
 ❌ Not adjusted for data engineering <br>
 Template is not really adjusted for building data pipelines that depend on each other. It's more efficient to use it for model prototyping on ready-to-use data.
