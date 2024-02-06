@@ -76,96 +76,123 @@ Lightning and Hydra are still evolving and integrate many libraries, which means
 ❌ Not adjusted for data engineering <br>
 Template is not really adjusted for building data pipelines that depend on each other. It's more efficient to use it for model prototyping on ready-to-use data.
 
++ 项目或模板并没有特别针对`数据工程方面`的需求进行优化或调整
+  - 该模板`不太适用于构建相互依赖的数据管道`。数据工程通常涉及到处理、转换和连接数据，而该模板更适用于用于模型原型设计的场景，其中`使用现成的数据`更为高效。
+  - 该模板更适合用于在准备好的数据上进行模型原型设计，而不是构建复杂的数据工程管道。
+  - `230925记：不适用于数据预处理？？？`
+
 ❌ Overfitted to simple use case <br>
 The configuration setup is built with simple lightning training in mind. You might need to put some effort to adjust it for different use cases, e.g. lightning fabric.
+
++ 该项目或模板在设计时主要考虑了简单的使用情况，导致可能对更复杂的用例不够灵活。
+  - 配置设置是根据简单的 Lightning 训练场景而构建的，这意味着项目的设计更适用于较为基本的训练需求。
+  - 如果你的使用情况较复杂，例如需要使用 `Lightning Fabric（可能是一种更高级的用例）`，那么你可能需要花一些额外的精力来对项目进行调整以满足你的需求。
 
 ❌ Might not support your workflow <br>
 For example, you can't resume hydra-based multirun or hyperparameter search.
 
-> **Note**: _Keep in mind this is unofficial community project._
++ 该项目或模板可能无法完全支持你的工作流程，可能存在一些局限性。
+  - 你可能无法在项目中恢复基于 Hydra 的多次运行（multirun）或超参数搜索，这可能限制了某些高级工作流程的支持。
 
+> **Note**: _Keep in mind this is unofficial community project._
++ 是一个非官方社区项目
 <br>
 
 ## Main Technologies
++ 主要使用的技术和库的信息
 
 [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) - a lightweight PyTorch wrapper for high-performance AI research. Think of it as a framework for organizing your PyTorch code.
+-  PyTorch Lightning 是一个用于高性能人工智能研究的轻量级 PyTorch 包装器。PyTorch Lightning 旨在简化 PyTorch 代码的组织和管理，以便更轻松地进行深度学习研究。
 
 [Hydra](https://github.com/facebookresearch/hydra) - a framework for elegantly configuring complex applications. The key feature is the ability to dynamically create a hierarchical configuration by composition and override it through config files and the command line.
+- Hydra 具有动态创建分层配置的能力，可以通过组合和使用配置文件以及命令行进行覆盖。这使得 Hydra 成为配置复杂应用程序的有力工具。
 
++ `PyTorch Lightning 用于组织 PyTorch 代码，Hydra 用于配置复杂应用程序。`这些库的使用有助于项目的开发和管理，提高了项目的可维护性和可配置性。
 <br>
 
 ## Main Ideas
-
++ 主要理念: 高效且有组织的机器学习项目框架。这些理念有助于提高项目的可维护性、可扩展性和开发效率。
 - [**Rapid Experimentation**](#your-superpowers): thanks to hydra command line superpowers
+  + （快速实验）： Hydra 命令行的强大功能使得快速实验变得更加容易。
 - [**Minimal Boilerplate**](#how-it-works): thanks to automating pipelines with config instantiation
+  + （最少样板代码）：自动化管道与配置实例化
 - [**Main Configs**](#main-config): allow you to specify default training configuration
+  + （主配置）：允许指定默认的训练配置，以确保项目的一致性
 - [**Experiment Configs**](#experiment-config): allow you to override chosen hyperparameters and version control experiments
+  + （实验配置）：允许在不同的实验中覆盖选定的超参数，从而对实验进行版本控制和管理。
 - [**Workflow**](#workflow): comes down to 4 simple steps
+  + （工作流程）：将其简化为四个简单的步骤，以提高开发效率。
 - [**Experiment Tracking**](#experiment-tracking): Tensorboard, W&B, Neptune, Comet, MLFlow and CSVLogger
+  + `（实验跟踪）`：多种实验跟踪工具，包括 Tensorboard、W&B、Neptune、Comet、MLFlow 和 CSVLogger。
 - [**Logs**](#logs): all logs (checkpoints, configs, etc.) are stored in a dynamically generated folder structure
+  + `（日志）`：所有的日志，包括检查点、配置等，都存储在一个动态生成的文件夹结构中。
 - [**Hyperparameter Search**](#hyperparameter-search): simple search is effortless with Hydra plugins like Optuna Sweeper
+  + `（超参数搜索）`：使用 Hydra 插件如 Optuna Sweeper 等来简化搜索过程。
 - [**Tests**](#tests): generic, easy-to-adapt smoke tests for speeding up the development
+  + （测试）：是通用的、易于调整的冒烟测试[**冒烟测试:焦点是验证软件的核心或基本功能**]，可以加速开发过程。
 - [**Continuous Integration**](#continuous-integration): automatically test and lint your repo with Github Actions
+  + `（持续集成）`：  使用 Github Actions 自动测试和检查代码库，以确保代码的质量。
 - [**Best Practices**](#best-practices): a couple of recommended tools, practices and standards
+  + （最佳实践）：一些推荐的工具、实践和标准，以帮助开发者在项目中采用最佳实践。
 
 <br>
 
 ## Project Structure
 
 The directory structure of new project looks like this:
-
++ 代码、配置、数据、测试等
 ```
-├── .github                   <- Github Actions workflows
-│
+├── .github                   <- Github Actions workflows : Github Actions 的工作流配置文件。Github Actions 是一种自动化工具，用于在 Github 仓库中执行各种操作，例如自动构建、测试和部署。
+│                            
 ├── configs                   <- Hydra configs
-│   ├── callbacks                <- Callbacks configs
-│   ├── data                     <- Data configs
-│   ├── debug                    <- Debugging configs
-│   ├── experiment               <- Experiment configs
-│   ├── extras                   <- Extra utilities configs
-│   ├── hparams_search           <- Hyperparameter search configs
-│   ├── hydra                    <- Hydra configs
-│   ├── local                    <- Local configs
-│   ├── logger                   <- Logger configs
-│   ├── model                    <- Model configs
-│   ├── paths                    <- Project paths configs
-│   ├── trainer                  <- Trainer configs
+│   ├── callbacks                <- Callbacks configs 回调配置。(回调函数通常用于在模型训练过程中执行特定的操作或记录特定的事件。)
+│   ├── data                     <- Data configs 数据配置 （数据处理和加载相关的配置文件。这些配置可能包括数据路径、数据预处理选项等。）
+│   ├── debug                    <- Debugging configs 调试配置 （配置调试选项的文件。它们可能包括启用或禁用调试模式、记录调试信息等）
+│   ├── experiment               <- Experiment configs 实验配置 （用于配置不同实验的参数和设置。每个实验可能有不同的配置。）
+│   ├── extras                   <- Extra utilities configs （额外工具配置）：用于配置项目中使用的其他实用工具或组件。
+│   ├── hparams_search           <- Hyperparameter search configs （超参数搜索配置）：用于配置超参数搜索的文件。超参数搜索是一种用于寻找模型最佳超参数组合的技术。
+│   ├── hydra                    <- Hydra configs（Hydra 配置）：可能包含 Hydra 框架本身的配置文件，用于配置 Hydra 的行为和选项。
+│   ├── local                    <- Local configs （本地配置）：包含了与本地开发和测试相关的配置文件。这些配置可能包括本地环境的设置和选项。
+│   ├── logger                   <- Logger configs（日志配置）：包含了用于配置日志记录的文件。日志通常用于记录项目的运行信息、事件和结果。
+│   ├── model                    <- Model configs 模型配置）：包含了用于配置机器学习模型的文件。这些配置可能包括模型结构、超参数等。
+│   ├── paths                    <- Project paths configs （项目路径配置）：包含了用于配置项目中各种路径的文件，如数据路径、模型保存路径等。
+│   ├── trainer                  <- Trainer configs （训练器配置）：包含了用于配置训练过程的文件。训练器配置可能包括训练的批量大小、学习率等设置。
 │   │
-│   ├── eval.yaml             <- Main config for evaluation
-│   └── train.yaml            <- Main config for training
+│   ├── eval.yaml             <- Main config for evaluation （评估主配置）：用于评估（evaluation）的主配置文件。它包含了评估过程的主要参数和设置。
+│   └── train.yaml            <- Main config for training （训练主配置）：用于训练（training）的主配置文件。它包含了训练过程的主要参数和设置。
 │
-├── data                   <- Project data
+├── data                   <- Project data :存储项目所需的数据
 │
-├── logs                   <- Logs generated by hydra and lightning loggers
+├── logs                   <- Logs generated by hydra and lightning loggers : 由 Hydra 和 Lightning Loggers 生成的日志文件。这些日志记录了项目的运行信息、结果和事件。
 │
 ├── notebooks              <- Jupyter notebooks. Naming convention is a number (for ordering),
 │                             the creator's initials, and a short `-` delimited description,
-│                             e.g. `1.0-jqp-initial-data-exploration.ipynb`.
+│                             e.g. `1.0-jqp-initial-data-exploration.ipynb`.: 每个笔记本文件的命名采用一定的约定，包括序号、创建者的缩写和简短的描述，以方便组织和查找。
 │
-├── scripts                <- Shell scripts
+├── scripts                <- Shell scripts :Shell脚本文件，这些脚本可用于自动执行特定的任务或操作
 │
-├── src                    <- Source code
-│   ├── data                     <- Data scripts
-│   ├── models                   <- Model scripts
-│   ├── utils                    <- Utility scripts
+├── src                    <- Source code 项目的源代码目录
+│   ├── data                     <- Data scripts 数据处理脚本
+│   ├── models                   <- Model scripts 模型脚本
+│   ├── utils                    <- Utility scripts 工具脚本
 │   │
-│   ├── eval.py                  <- Run evaluation
-│   └── train.py                 <- Run training
+│   ├── eval.py                  <- Run evaluation 运行评估
+│   └── train.py                 <- Run training 运行训练
 │
-├── tests                  <- Tests of any kind
+├── tests                  <- Tests of any kind 项目的测试文件，用于验证代码的正确性和功能性。
 │
-├── .env.example              <- Example of file for storing private environment variables
-├── .gitignore                <- List of files ignored by git
-├── .pre-commit-config.yaml   <- Configuration of pre-commit hooks for code formatting
-├── .project-root             <- File for inferring the position of project root directory
+├── .env.example              <- Example of file for storing private environment variables :示例文件，用于存储私有环境变量的配置信息。通常，开发者可以使用这个示例文件创建自己的私有环境变量文件
+├── .gitignore                <- List of files ignored by git :列出了 Git 忽略的文件和目录，防止它们被添加到版本控制中。
+├── .pre-commit-config.yaml   <- Configuration of pre-commit hooks for code formatting :配置 pre-commit 钩子的配置文件，用于自动化代码格式化。
+├── .project-root             <- File for inferring the position of project root directory:用于标识项目根目录的位置，通常由工具自动生成。
 ├── environment.yaml          <- File for installing conda environment
-├── Makefile                  <- Makefile with commands like `make train` or `make test`
-├── pyproject.toml            <- Configuration options for testing and linting
+├── Makefile                  <- Makefile with commands like `make train` or `make test`: 包含了一些命令，如 make train 或 make test，用于执行常见的项目任务
+├── pyproject.toml            <- Configuration options for testing and linting: 包含了有关测试和代码检查的配置选项，通常与 Python 工具（如 poetry）一起使用。
 ├── requirements.txt          <- File for installing python dependencies
-├── setup.py                  <- File for installing project as a package
+├── setup.py                  <- File for installing project as a package: 用于将项目安装为 Python 包
 └── README.md
 ```
-
+  
 <br>
 
 ## 🚀  Quickstart
@@ -188,7 +215,7 @@ pip install -r requirements.txt
 
 Template contains example with MNIST classification.<br>
 When running `python src/train.py` you should see something like this:
-
++ MNIST 分类的示例
 <div align="center">
 
 ![](https://github.com/ashleve/lightning-hydra-template/blob/resources/terminal.png)
@@ -198,13 +225,13 @@ When running `python src/train.py` you should see something like this:
 ## ⚡  Your Superpowers
 
 <details>
-<summary><b>Override any config parameter from command line</b></summary>
+<summary><b>Override any config parameter from command line从命令行覆盖任何配置参数</b></summary>
 
 ```bash
 python train.py trainer.max_epochs=20 model.optimizer.lr=1e-4
 ```
 
-> **Note**: You can also add new parameters with `+` sign.
+> **Note**: You can also add new parameters with `+` sign.可使用`+` 符号来添加新参数
 
 ```bash
 python train.py +model.new_param="owo"
@@ -226,36 +253,41 @@ python train.py trainer=gpu
 python train.py +trainer.tpu_cores=8
 
 # train with DDP (Distributed Data Parallel) (4 GPUs)
+# （使用 DDP（分布式数据并行）进行训练（4个GPU））
 python train.py trainer=ddp trainer.devices=4
 
 # train with DDP (Distributed Data Parallel) (8 GPUs, 2 nodes)
+# （8个GPU，2个节点）
 python train.py trainer=ddp trainer.devices=4 trainer.num_nodes=2
 
-# simulate DDP on CPU processes
+# simulate DDP on CPU processes （在CPU进程上模拟DDP训练）
 python train.py trainer=ddp_sim trainer.devices=2
 
-# accelerate training on mac
+# accelerate training on mac（在Mac上加速训练）
 python train.py trainer=mps
 ```
 
-> **Warning**: Currently there are problems with DDP mode, read [this issue](https://github.com/ashleve/lightning-hydra-template/issues/393) to learn more.
+> **Warning**: Currently there are problems with DDP mode, read [this issue](https://github.com/ashleve/lightning-hydra-template/issues/393) to learn more.（目前 DDP 模式存在问题）：这句话说明在项目中使用 DDP 模式进行训练时，可能会遇到一些问题或 bug。
 
 </details>
 
 <details>
-<summary><b>Train with mixed precision</b></summary>
-
+<summary><b>Train with mixed precision（使用混合精度进行训练）</b></summary>
++ 混合精度是一种训练技术，可以在保持训练效果的同时减少模型训练所需的显存
 ```bash
 # train with pytorch native automatic mixed precision (AMP)
+# （使用 PyTorch 原生的自动混合精度进行训练）
 python train.py trainer=gpu +trainer.precision=16
 ```
-
++ 混合精度训练是一种用于减少深度学习模型训练所需显存的技术，通过使用较低位数的浮点数表示权重和梯度，可以在减少内存占用的同时保持训练的效果。在示例中，用户可以参考这个命令来了解如何配置项目以启用混合精度训练，以便在硬件资源有限的情况下提高模型的训练效率。
+ 
 </details>
 
 <!-- deepspeed support still in beta
+# （DeepSpeed 支持仍处于测试阶段）
 <details>
 <summary><b>Optimize large scale models on multiple GPUs with Deepspeed</b></summary>
-
++ 使用 DeepSpeed 来优化在多个 GPU 上进行训练的大规模模型。
 ```bash
 python train.py +trainer.
 ```
@@ -264,30 +296,31 @@ python train.py +trainer.
  -->
 
 <details>
-<summary><b>Train model with any logger available in PyTorch Lightning, like W&B or Tensorboard</b></summary>
+<summary><b>Train model with any logger available in PyTorch Lightning, like W&B or Tensorboard（使用PyTorch Lightning中的任何记录器（logger）来训练模型：记录和监视模型的训练过程）</b></summary>
 
 ```yaml
 # set project and entity names in `configs/logger/wandb`
+# 在configs/logger/wandb中设置项目和实体名称
 wandb:
   project: "your_project_name"
   entity: "your_wandb_team_name"
 ```
 
 ```bash
-# train model with Weights&Biases (link to wandb dashboard should appear in the terminal)
+# train model with Weights&Biases (link to wandb dashboard should appear in the terminal)（使用 Weights&Biases 记录器来训练模型，终端中应出现指向 W&B 仪表板的链接）
 python train.py logger=wandb
 ```
 
 > **Note**: Lightning provides convenient integrations with most popular logging frameworks. Learn more [here](#experiment-tracking).
-
+（注意：Lightning 提供了与大多数流行的记录框架方便集成。了解更多信息在此处。）
 > **Note**: Using wandb requires you to [setup account](https://www.wandb.com/) first. After that just complete the config as below.
-
+（注意：使用 wandb 需要你先设置帐户。之后，只需按照下面的配置完成即可。）
 > **Note**: Click [here](https://wandb.ai/hobglob/template-dashboard/) to see example wandb dashboard generated with this template.
-
+（注意：点击这里查看使用此模板生成的示例 wandb 仪表板。）
 </details>
 
 <details>
-<summary><b>Train model with chosen experiment config</b></summary>
+<summary><b>Train model with chosen experiment config（使用已选择的实验配置来训练模型）</b></summary>
 
 ```bash
 python train.py experiment=example
@@ -1201,22 +1234,25 @@ hydra:
 
 ## Resources
 
++ 与当前项目相关的资源和灵感来源
 This template was inspired by:
 
 - [PyTorchLightning/deep-learning-project-template](https://github.com/PyTorchLightning/deep-learning-project-template)
+  -  PyTorch Lightning 团队创建的，用于深度学习项目的模板。
 - [drivendata/cookiecutter-data-science](https://github.com/drivendata/cookiecutter-data-science)
+  -  DrivenData 团队创建的，用于数据科学项目的模板。
 - [lucmos/nn-template](https://github.com/lucmos/nn-template)
-
+  - 用于深度学习项目的模板。
 Other useful repositories:
 
 - [jxpress/lightning-hydra-template-vertex-ai](https://github.com/jxpress/lightning-hydra-template-vertex-ai) - lightning-hydra-template integration with Vertex AI hyperparameter tuning and custom training job
-
+  -集成了 Vertex AI 的超参数调整和自定义训练作业功能，与当前的 "lightning-hydra-template" 进行了整合。
 </details>
 
 <br>
 
 ## License
-
++ 许可证
 Lightning-Hydra-Template is licensed under the MIT License.
 
 ```
@@ -1249,7 +1285,7 @@ SOFTWARE.
 <br>
 
 **DELETE EVERYTHING ABOVE FOR YOUR PROJECT**
-
+为你的项目删除上面所有内容
 ______________________________________________________________________
 
 <div align="center">
